@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Cat Simulator</title>
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --cat-fill: #ffffff;
+            --stroke: #e0e0e0;
+        }
+
+        body.night {
+            --bg-color: #1a2a6c;
+        }
+
+        body.gold-mode {
+            --cat-fill: #ffd700;
+            --stroke: #daa520;
+        }
+
+        body.lilac-mode {
+            --cat-fill: #c8a2ff;
+            --stroke: #9f7bd1;
+        }
+
+        body.rainbow-mode {
+            --cat-fill: linear-gradient(135deg,
+                    #ff6b6b 0%,
+                    #ffb347 20%,
+                    #fff275 40%,
+                    #7bd389 60%,
+                    #5da9ff 80%,
+                    #c77dff 100%);
+            --stroke: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg-color);
+            transition: background-color 0.8s;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        /* UI Layer */
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            pointer-events: auto;
+            margin-bottom: 5px;
+            min-width: 100px;
+        }
+
+        .bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        #hunger-fill {
+            width: 100%;
+            height: 100%;
+            background: #4caf50;
+            transition: width 0.3s;
+        }
+
+        #xp-fill {
+            width: 0%;
+            height: 100%;
+            background: #2196f3;
+            transition: width 0.3s;
+        }
+
+        #theme-toggle {
+            cursor: pointer;
+            border: none;
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            pointer-events: auto;
+        }
+
+        /* The Cat */
+        .cat-container {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            cursor: pointer;
+        }
+
+        @keyframes purr {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(1px, -1px);
+            }
+        }
+
+        .cat-container:hover,
+        body.night .cat-container {
+            animation: purr 0.15s linear infinite;
+        }
+
+        .fur {
+            background: var(--cat-fill);
+            border: 2px solid var(--stroke);
+            transition: background 0.5s, border 0.5s;
+        }
+
+        .head {
+            width: 130px;
+            height: 110px;
+            border-radius: 50% 50% 45% 45%;
+            position: absolute;
+            top: 50px;
+            left: 45px;
+            z-index: 3;
+        }
+
+        .body {
+            width: 115px;
+            height: 130px;
+            border-radius: 50% 50% 35% 35%;
+            position: absolute;
+            bottom: 20px;
+            left: 52px;
+            z-index: 1;
+        }
+
+        .ear {
+            width: 48px;
+            height: 58px;
+            position: absolute;
+            top: -24px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 2;
+        }
+
+        .ear::before {
+            content: "";
+            position: absolute;
+            left: -3px;
+            right: -3px;
+            bottom: -6px;
+            height: 12px;
+            background: var(--cat-fill);
+        }
+
+        .ear.left {
+            left: -2px;
+            transform: rotate(-16deg);
+        }
+
+        .ear.right {
+            right: -2px;
+            transform: rotate(16deg);
+        }
+
+        .inner-ear {
+            width: 60%;
+            height: 68%;
+            background: #ffd1dc;
+            margin: 22% auto 0;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .eye {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 40px;
+            border: 1px solid #eee;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+
+        .eye.left {
+            left: 28px;
+        }
+
+        .eye.right {
+            right: 28px;
+        }
+
+        .pupil {
+            width: 10px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+
+        body.night .eye {
+            height: 3px;
+            top: 50px;
+            background: #555;
+        }
+
+        body.night .pupil {
+            opacity: 0;
+        }
+
+        .nose {
+            width: 10px;
+            height: 7px;
+            background: #ffb6c1;
+            border-radius: 50%;
+            position: absolute;
+            top: 72px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .whiskers {
+            position: absolute;
+            top: 76px;
+            left: 50%;
+            width: 100px;
+            height: 24px;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .whisker {
+            position: absolute;
+            width: 36px;
+            height: 2px;
+            background: #7b7b7b;
+            border-radius: 999px;
+        }
+
+        .whisker.left.top {
+            left: 0;
+            top: 1px;
+            transform: rotate(14deg);
+        }
+
+        .whisker.left.middle {
+            left: -2px;
+            top: 10px;
+        }
+
+        .whisker.left.bottom {
+            left: 0;
+            top: 19px;
+            transform: rotate(-14deg);
+        }
+
+        .whisker.right.top {
+            right: 0;
+            top: 1px;
+            transform: rotate(-14deg);
+        }
+
+        .whisker.right.middle {
+            right: -2px;
+            top: 10px;
+        }
+
+        .whisker.right.bottom {
+            right: 0;
+            top: 19px;
+            transform: rotate(14deg);
+        }
+
+        .tail {
+            width: 80px;
+            height: 20px;
+            border-radius: 20px;
+            position: absolute;
+            bottom: 45px;
+            right: 10px;
+            transform-origin: left center;
+            animation: wag 1.5s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes wag {
+
+            0%,
+            100% {
+                transform: rotate(-10deg);
+            }
+
+            50% {
+                transform: rotate(20deg);
+            }
+        }
+
+        /* Popups */
+        #food-bowl {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            font-size: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            pointer-events: auto;
+        }
+
+        #speech-bubble {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #speech-bubble.active {
+            transform: translateX(-50%) scale(1);
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff4b2b;
+            font-size: 24px;
+            animation: flyUp 1s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes flyUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-120px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="ui-layer">
+        <div>
+            <div class="stat-box">🐾 Pets: <span id="pet-count">0</span></div>
+            <div class="stat-box">✨ Lvl <span id="lvl-count">1</span>
+                <div class="bar-bg">
+                    <div id="xp-fill"></div>
+                </div>
+            </div>
+            <div class="stat-box">🍴 Hunger
+                <div class="bar-bg">
+                    <div id="hunger-fill"></div>
+                </div>
+            </div>
+        </div>
+        <button id="theme-toggle">Night Mode</button>
+    </div>
+
+    <div id="food-bowl">🥣</div>
+
+    <div class="cat-container" id="cat">
+        <div id="speech-bubble">Welcome Back!</div>
+        <div class="tail fur"></div>
+        <div class="body fur"></div>
+        <div class="head fur">
+            <div class="ear left fur">
+                <div class="inner-ear"></div>
+            </div>
+            <div class="ear right fur">
+                <div class="inner-ear"></div>
+            </div>
+            <div class="eye left">
+                <div class="pupil"></div>
+            </div>
+            <div class="eye right">
+                <div class="pupil"></div>
+            </div>
+            <div class="whiskers">
+                <div class="whisker left top"></div>
+                <div class="whisker left middle"></div>
+                <div class="whisker left bottom"></div>
+                <div class="whisker right top"></div>
+                <div class="whisker right middle"></div>
+                <div class="whisker right bottom"></div>
+            </div>
+            <div class="nose"></div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let pets = 0, hunger = 100, xp = 0, lvl = 1;
+        const body = document.body;
+        const cat = document.getElementById('cat');
+        const pupils = document.querySelectorAll('.pupil');
+        const bubble = document.getElementById('speech-bubble');
+
+        // 1. PERSISTENCE: Save & Load Functions
+        function saveGame() {
+            const gameState = { pets, hunger, xp, lvl };
+            localStorage.setItem('catSimSave', JSON.stringify(gameState));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('catSimSave');
+            if (saved) {
+                const data = JSON.parse(saved);
+                pets = data.pets || 0;
+                hunger = data.hunger || 100;
+                xp = data.xp || 0;
+                lvl = data.lvl || 1;
+                updateUI();
+                showBubble("Data Loaded!");
+            }
+        }
+
+        function applyCatAppearance() {
+            body.classList.remove('gold-mode', 'lilac-mode', 'rainbow-mode');
+
+            if (lvl >= 50) {
+                body.classList.add('rainbow-mode');
+            } else if (lvl >= 15) {
+                body.classList.add('lilac-mode');
+            } else if (lvl >= 5) {
+                body.classList.add('gold-mode');
+            }
+        }
+
+        // 2. UI Updates
+        function updateUI() {
+            applyCatAppearance();
+            document.getElementById('pet-count').innerText = pets;
+            document.getElementById('lvl-count').innerText = lvl;
+            document.getElementById('xp-fill').style.width = xp + "%";
+            document.getElementById('hunger-fill').style.width = hunger + "%";
+            saveGame(); // Auto-save on every update
+        }
+
+        // 3. Game Loops
+        setInterval(() => {
+            if (body.classList.contains('night')) return;
+            hunger = Math.max(0, hunger - 1);
+            updateUI();
+        }, 2000);
+
+        // 4. Interactions
+        document.getElementById('food-bowl').addEventListener('click', () => {
+            hunger = Math.min(100, hunger + 20);
+            addXP(5);
+            updateUI();
+            showBubble("Yum! 🐟");
+        });
+
+        cat.addEventListener('mousedown', (e) => {
+            pets++;
+            addXP(2);
+            createHeart(e.clientX, e.clientY);
+            updateUI();
+            showBubble(body.classList.contains('night') ? "Zzz..." : "Purrr~");
+        });
+
+        function addXP(amount) {
+            xp += amount;
+            if (xp >= 100) { xp = 0; lvl++; showBubble("LEVEL UP! ⭐"); }
+        }
+
+        function createHeart(x, y) {
+            const h = document.createElement('div');
+            h.innerHTML = '❤️'; h.className = 'heart';
+            h.style.left = x + 'px'; h.style.top = y + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1000);
+        }
+
+        // Initialize
+        window.onload = loadGame;
+
+        // Night Mode & Eye Tracking
+        document.getElementById('theme-toggle').addEventListener('click', (e) => {
+            body.classList.toggle('night');
+            e.target.innerText = body.classList.contains('night') ? "Day Mode" : "Night Mode";
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (body.classList.contains('night')) return;
+            pupils.forEach(p => {
+                const r = p.parentElement.getBoundingClientRect();
+                const a = Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2));
+                p.style.transform = `translate(calc(-50% + ${Math.cos(a) * 4}px), calc(-50% + ${Math.sin(a) * 4}px))`;
+            });
+        });
+
+        function showBubble(text) {
+            bubble.innerText = text;
+            bubble.classList.add('active');
+            setTimeout(() => bubble.classList.remove('active'), 1500);
+        }
+    </script>
+</body>
+
+</html>
