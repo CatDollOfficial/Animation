@@ -126,6 +126,18 @@
             }
         }
 
+        @keyframes luckyWave {
+
+            0%,
+            100% {
+                transform: rotate(-18deg);
+            }
+
+            50% {
+                transform: rotate(14deg);
+            }
+        }
+
         .cat-container:hover,
         body.night .cat-container {
             animation: purr 0.15s linear infinite;
@@ -155,6 +167,86 @@
             bottom: 20px;
             left: 52px;
             z-index: 1;
+        }
+
+        .arm {
+            width: 34px;
+            border-radius: 22px;
+            position: absolute;
+        }
+
+        .arm.left {
+            height: 102px;
+            top: 88px;
+            left: 24px;
+            transform-origin: 50% 14px;
+            transform: rotate(-18deg);
+            animation: luckyWave 2.4s ease-in-out infinite;
+            z-index: 4;
+        }
+
+        .arm.right {
+            height: 76px;
+            top: 148px;
+            right: 29px;
+            transform: rotate(16deg);
+            z-index: 2;
+        }
+
+        .feet {
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            width: 136px;
+            height: 58px;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .foot {
+            width: 42px;
+            height: 48px;
+            border-radius: 48% 48% 38% 38%;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .foot.left {
+            left: 20px;
+            transform: rotate(-8deg);
+        }
+
+        .foot.right {
+            right: 20px;
+            transform: rotate(8deg);
+        }
+
+        .paw-print {
+            width: 18px;
+            height: 14px;
+            background: #ffd1dc;
+            border-radius: 50% 50% 45% 45%;
+            position: absolute;
+            left: 50%;
+            bottom: 8px;
+            transform: translateX(-50%);
+        }
+
+        .paw-print::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            background: #ffd1dc;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: -8px;
+            transform: translateX(-50%);
+            box-shadow: -10px 4px 0 #ffd1dc, 10px 4px 0 #ffd1dc;
+        }
+
+        .arm.left .paw-print {
+            bottom: 10px;
         }
 
         .ear {
@@ -399,6 +491,20 @@
     <div class="cat-container" id="cat">
         <div id="speech-bubble">Welcome Back!</div>
         <div class="tail fur"></div>
+        <div class="arm left fur">
+            <div class="paw-print"></div>
+        </div>
+        <div class="arm right fur">
+            <div class="paw-print"></div>
+        </div>
+        <div class="feet">
+            <div class="foot left fur">
+                <div class="paw-print"></div>
+            </div>
+            <div class="foot right fur">
+                <div class="paw-print"></div>
+            </div>
+        </div>
         <div class="body fur"></div>
         <div class="head fur">
             <div class="ear left fur">
