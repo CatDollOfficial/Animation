@@ -130,11 +130,11 @@
 
             0%,
             100% {
-                transform: rotate(-18deg);
+                transform: rotate(-10deg) translateY(0);
             }
 
             50% {
-                transform: rotate(14deg);
+                transform: rotate(5deg) translateY(-3px);
             }
         }
 
@@ -167,30 +167,28 @@
             bottom: 20px;
             left: 52px;
             z-index: 1;
+            overflow: hidden;
         }
 
         .arm {
-            width: 34px;
-            border-radius: 22px;
+            width: 44px;
+            height: 36px;
+            border-radius: 50%;
             position: absolute;
+            top: 26px;
+            z-index: 2;
         }
 
         .arm.left {
-            height: 102px;
-            top: 88px;
-            left: 24px;
-            transform-origin: 50% 14px;
-            transform: rotate(-18deg);
+            left: 14px;
+            transform-origin: 50% 50%;
+            transform: rotate(-10deg);
             animation: luckyWave 2.4s ease-in-out infinite;
-            z-index: 4;
         }
 
         .arm.right {
-            height: 76px;
-            top: 148px;
-            right: 29px;
-            transform: rotate(16deg);
-            z-index: 2;
+            right: 14px;
+            transform: rotate(10deg);
         }
 
         .feet {
@@ -245,8 +243,8 @@
             box-shadow: -10px 4px 0 #ffd1dc, 10px 4px 0 #ffd1dc;
         }
 
-        .arm.left .paw-print {
-            bottom: 10px;
+        .arm .paw-print {
+            bottom: 7px;
         }
 
         .ear {
@@ -342,12 +340,24 @@
 
         .whiskers {
             position: absolute;
-            top: 76px;
+            top: 68px;
             left: 50%;
             width: 100px;
             height: 24px;
             transform: translateX(-50%);
             z-index: 1;
+        }
+
+        .mouth {
+            position: absolute;
+            left: 50%;
+            top: 84px;
+            width: 18px;
+            height: 10px;
+            transform: translateX(-50%);
+            z-index: 2;
+            border-bottom: 3px solid #6f5963;
+            border-radius: 0 0 18px 18px;
         }
 
         .whisker {
@@ -393,13 +403,13 @@
         }
 
         .tail {
-            width: 80px;
-            height: 20px;
-            border-radius: 20px;
+            width: calc(78px + 3mm);
+            height: 24px;
+            border-radius: 20px 999px 999px 28px;
             position: absolute;
-            bottom: 45px;
-            right: 10px;
-            transform-origin: left center;
+            bottom: calc(58px - 9mm);
+            right: 8px;
+            transform-origin: 14px center;
             animation: wag 1.5s ease-in-out infinite;
             z-index: 0;
         }
@@ -408,11 +418,11 @@
 
             0%,
             100% {
-                transform: rotate(-10deg);
+                transform: rotate(-52deg);
             }
 
             50% {
-                transform: rotate(20deg);
+                transform: rotate(-34deg);
             }
         }
 
@@ -491,12 +501,6 @@
     <div class="cat-container" id="cat">
         <div id="speech-bubble">Welcome Back!</div>
         <div class="tail fur"></div>
-        <div class="arm left fur">
-            <div class="paw-print"></div>
-        </div>
-        <div class="arm right fur">
-            <div class="paw-print"></div>
-        </div>
         <div class="feet">
             <div class="foot left fur">
                 <div class="paw-print"></div>
@@ -505,7 +509,14 @@
                 <div class="paw-print"></div>
             </div>
         </div>
-        <div class="body fur"></div>
+        <div class="body fur">
+            <div class="arm left fur">
+                <div class="paw-print"></div>
+            </div>
+            <div class="arm right fur">
+                <div class="paw-print"></div>
+            </div>
+        </div>
         <div class="head fur">
             <div class="ear left fur">
                 <div class="inner-ear"></div>
@@ -528,6 +539,7 @@
                 <div class="whisker right bottom"></div>
             </div>
             <div class="nose"></div>
+            <div class="mouth"></div>
         </div>
     </div>
 
