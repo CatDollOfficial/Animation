@@ -402,13 +402,14 @@
         }
 
         .tail {
-            width: calc(78px + 3mm);
+            width: calc(78px + 14.5mm);
             height: 24px;
             border-radius: 20px 999px 999px 28px;
             position: absolute;
-            bottom: calc(58px - 9mm);
-            right: 8px;
-            transform-origin: 14px center;
+            bottom: 30px;
+            left: calc(50% - 10px);
+            right: auto;
+            transform-origin: 10px center;
             animation: wag 1.5s ease-in-out infinite;
             z-index: 0;
         }
@@ -417,11 +418,11 @@
 
             0%,
             100% {
-                transform: rotate(-52deg);
+                transform: rotate(-42deg);
             }
 
             50% {
-                transform: rotate(-34deg);
+                transform: rotate(-26deg);
             }
         }
 
