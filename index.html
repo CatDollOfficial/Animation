@@ -10,36 +10,93 @@
     <style>
         :root {
             --bg-color: #f0f4f8;
-            --cat-fill: #ffffff;
-            --stroke: #e0e0e0;
+            --cat-fill: #f7f3eb;
+            --stroke: #ddd7cd;
+            --whisker-color: #7b7b7b;
+            --rainbow-fill:
+                radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 28%),
+                linear-gradient(135deg,
+                    #ff5f8f 0%,
+                    #ff708f 12%,
+                    #ff7a82 24%,
+                    #ff9b7c 37%,
+                    #ffd27d 50%,
+                    #9be28f 62%,
+                    #7dcff2 73%,
+                    #8c92ff 84%,
+                    #b46fff 100%);
+            --rainbow-text-fill: linear-gradient(90deg,
+                    #ff5f8f 0%,
+                    #ff708f 12%,
+                    #ff7a82 24%,
+                    #ff9b7c 37%,
+                    #ffd27d 50%,
+                    #9be28f 62%,
+                    #7dcff2 73%,
+                    #8c92ff 84%,
+                    #b46fff 100%);
         }
 
         body.night {
             --bg-color: #1a2a6c;
+            background-image:
+                radial-gradient(circle at top, rgba(125, 148, 255, 0.22), rgba(125, 148, 255, 0) 34%),
+                linear-gradient(180deg, rgba(33, 50, 120, 0.96) 0%, rgba(21, 35, 91, 0.94) 56%, rgba(13, 24, 63, 0.98) 100%);
         }
 
         body.gold-mode {
-            --cat-fill: #ffd700;
-            --stroke: #daa520;
+            --cat-fill: #e6d88f;
+            --stroke: #c3b36a;
+        }
+
+        body.baby-blue-mode {
+            --cat-fill: #bfe6ff;
+            --stroke: #8dbedc;
         }
 
         body.lilac-mode {
-            --cat-fill: #c8a2ff;
-            --stroke: #9f7bd1;
+            --cat-fill: #d5bbff;
+            --stroke: #aa8fd6;
+        }
+
+        body.baby-pink-mode {
+            --cat-fill: #f4c4d4;
+            --stroke: #d39faf;
+        }
+
+        body.cool-red-mode {
+            --cat-fill: #d77d95;
+            --stroke: #ac5670;
+        }
+
+        body.pistachio-mode {
+            --cat-fill: #c9ddb1;
+            --stroke: #9eb483;
+        }
+
+        body.violet-mode {
+            --cat-fill: #8f79bf;
+            --stroke: #6c5b93;
+        }
+
+        body.orange-mode {
+            --cat-fill: #ebb087;
+            --stroke: #cb8760;
+        }
+
+        body.black-mode {
+            --cat-fill: #3b4048;
+            --stroke: #676f7d;
+            --whisker-color: #d9dde7;
         }
 
         body.rainbow-mode {
-            --cat-fill: linear-gradient(135deg,
-                    #ff6b6b 0%,
-                    #ffb347 20%,
-                    #fff275 40%,
-                    #7bd389 60%,
-                    #5da9ff 80%,
-                    #c77dff 100%);
-            --stroke: #ffffff;
+            --cat-fill: var(--rainbow-fill);
+            --stroke: #fff8ff;
         }
 
         body {
+            position: relative;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -47,9 +104,554 @@
             align-items: center;
             height: 100vh;
             background-color: var(--bg-color);
-            transition: background-color 0.8s;
+            background-image:
+                radial-gradient(circle at top, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 36%),
+                linear-gradient(180deg, rgba(255, 244, 231, 0.88) 0%, rgba(246, 232, 214, 0.78) 54%, rgba(232, 209, 183, 0.7) 100%);
+            transition: background-color 0.8s, background-image 0.8s;
             font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
+        }
+
+        #room-scene {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #room-scene::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 34%;
+            background:
+                repeating-linear-gradient(90deg,
+                    rgba(145, 96, 60, 0.05) 0 18px,
+                    rgba(255, 255, 255, 0.05) 18px 21px,
+                    rgba(145, 96, 60, 0.08) 21px 39px),
+                linear-gradient(180deg, #ddb692 0%, #cb9569 52%, #b7794a 100%);
+            box-shadow: inset 0 10px 0 rgba(255, 255, 255, 0.18);
+        }
+
+        #room-scene::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 34%;
+            height: 2px;
+            background: rgba(146, 103, 70, 0.18);
+        }
+
+        body.night #room-scene::before {
+            background:
+                repeating-linear-gradient(90deg,
+                    rgba(37, 49, 95, 0.2) 0 18px,
+                    rgba(255, 255, 255, 0.03) 18px 21px,
+                    rgba(19, 30, 67, 0.28) 21px 39px),
+                linear-gradient(180deg, #273a74 0%, #1d2d5c 52%, #152142 100%);
+            box-shadow: inset 0 10px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        body.night #room-scene::after {
+            background: rgba(167, 186, 255, 0.14);
+        }
+
+        .cat-apparatus {
+            position: absolute;
+            left: max(3vw, 24px);
+            bottom: calc(118px + 10mm);
+            width: 112px;
+            height: 196px;
+            z-index: 6;
+            opacity: 0.95;
+        }
+
+        .apparatus-base {
+            position: absolute;
+            left: 10px;
+            bottom: 0;
+            width: 92px;
+            height: 18px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, #735a52 0%, #5d2d22 100%);
+            box-shadow: 0 10px 16px rgba(114, 62, 34, 0.28);
+        }
+
+        .apparatus-base::before {
+            content: "";
+            position: absolute;
+            left: 17px;
+            bottom: 16px;
+            width: 58px;
+            height: 46px;
+            border-radius: 18px 18px 12px 12px;
+            background: linear-gradient(180deg, #b68d80 0%, #392b27 100%);
+            box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.16);
+        }
+
+        .apparatus-base::after {
+            content: "";
+            position: absolute;
+            left: 30px;
+            bottom: 28px;
+            width: 30px;
+            height: 22px;
+            border-radius: 50% 50% 42% 42%;
+            background: rgba(92, 55, 45, 0.3);
+        }
+
+        .apparatus-post {
+            position: absolute;
+            left: 48px;
+            bottom: 18px;
+            width: 15px;
+            height: 112px;
+            border-radius: 999px;
+            background:
+                repeating-linear-gradient(180deg, #725a52 0 9px, #4f3d37 9px 18px);
+            box-shadow: inset -2px 0 0 rgba(0, 0, 0, 0.14);
+        }
+
+        .apparatus-platform {
+            position: absolute;
+            left: 28px;
+            top: 58px;
+            width: 54px;
+            height: 12px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #f1c131 0%, #48d9d2 100%);
+            box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.16);
+        }
+
+        .apparatus-top {
+            position: absolute;
+            left: 18px;
+            top: 6px;
+            width: 76px;
+            height: 24px;
+            border-radius: 18px 18px 14px 14px;
+            background: linear-gradient(180deg, #776058 0%, #473631 100%);
+            box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.16);
+        }
+
+        .apparatus-top::before {
+            content: "";
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: 8px;
+            height: 7px;
+            border-radius: 999px;
+            background: rgb(94, 29, 14);
+        }
+
+        .apparatus-toy {
+            position: absolute;
+            left: 80px;
+            top: 26px;
+            width: 2px;
+            height: 30px;
+            background: rgba(16, 27, 2, 0.727);
+        }
+
+        .apparatus-toy::after {
+            content: "";
+            position: absolute;
+            left: -7px;
+            bottom: -12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #f13070 0%, #da0aa2 100%);
+            box-shadow: 0 0 0 2px rgba(240, 38, 105, 0.87);
+        }
+
+        body.night .cat-apparatus {
+            opacity: 0.85;
+        }
+
+        .room-window {
+            position: absolute;
+            right: max(4vw, 28px);
+            top: 102px;
+            width: min(31vw, 248px);
+            height: min(23vw, 186px);
+            filter: drop-shadow(0 18px 28px rgba(88, 77, 68, 0.15));
+            z-index: 3;
+        }
+
+        .window-frame {
+            position: absolute;
+            inset: 0;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #d7c3af 0%, #c8ae96 52%, #e2d2c1 100%);
+            border: 10px solid #c2a78d;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                0 18px 30px rgba(99, 79, 61, 0.14);
+            overflow: hidden;
+        }
+
+        .window-frame::before,
+        .window-frame::after {
+            content: "";
+            position: absolute;
+            background: rgba(215, 197, 180, 0.88);
+            z-index: 2;
+        }
+
+        .window-frame::before {
+            top: 12px;
+            bottom: 12px;
+            left: 50%;
+            width: 8px;
+            transform: translateX(-50%);
+        }
+
+        .window-frame::after {
+            left: 12px;
+            right: 12px;
+            top: 50%;
+            height: 8px;
+            transform: translateY(-50%);
+        }
+
+        .window-view {
+            position: absolute;
+            inset: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.78) 0 7%, rgba(255, 255, 255, 0) 8%),
+                radial-gradient(circle at 28% 21%, rgba(255, 255, 255, 0.72) 0 6%, rgba(255, 255, 255, 0) 7%),
+                radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.66) 0 7%, rgba(255, 255, 255, 0) 8%),
+                radial-gradient(circle at 72% 30%, rgba(255, 255, 255, 0.58) 0 7%, rgba(255, 255, 255, 0) 8%),
+                radial-gradient(circle at 79% 30%, rgba(255, 255, 255, 0.52) 0 6%, rgba(255, 255, 255, 0) 7%),
+                linear-gradient(180deg, #dce5e8 0%, #c9d8dc 34%, #b9c8b0 34%, #9db39c 58%, #879c85 100%);
+        }
+
+        body.night .window-view {
+            background:
+                radial-gradient(circle at 78% 18%, rgba(255, 247, 220, 0.7) 0 7%, rgba(255, 247, 220, 0) 8%),
+                radial-gradient(circle at 14% 14%, rgba(255, 255, 255, 0.92) 0 1.2%, rgba(255, 255, 255, 0) 1.8%),
+                radial-gradient(circle at 26% 22%, rgba(255, 255, 255, 0.88) 0 1%, rgba(255, 255, 255, 0) 1.6%),
+                radial-gradient(circle at 42% 16%, rgba(255, 255, 255, 0.82) 0 1.1%, rgba(255, 255, 255, 0) 1.7%),
+                radial-gradient(circle at 58% 28%, rgba(255, 255, 255, 0.78) 0 0.9%, rgba(255, 255, 255, 0) 1.5%),
+                radial-gradient(circle at 74% 40%, rgba(255, 255, 255, 0.74) 0 1.1%, rgba(255, 255, 255, 0) 1.7%),
+                radial-gradient(circle at 88% 26%, rgba(255, 255, 255, 0.82) 0 1%, rgba(255, 255, 255, 0) 1.6%),
+                linear-gradient(180deg, #09143d 0%, #13245d 38%, #1a305a 38%, #162847 62%, #102038 100%);
+        }
+
+        .window-view::before {
+            content: "";
+            position: absolute;
+            left: 24px;
+            bottom: 36px;
+            width: 62px;
+            height: 76px;
+            background:
+                radial-gradient(circle at 46% 26%, #a8b8a6 0 18px, rgba(168, 184, 166, 0) 19px),
+                radial-gradient(circle at 68% 34%, #96a893 0 14px, rgba(150, 168, 147, 0) 15px),
+                radial-gradient(circle at 26% 36%, #8fa18c 0 13px, rgba(143, 161, 140, 0) 14px),
+                linear-gradient(180deg, #846453 0%, #6a4f40 100%);
+            background-size: auto, auto, auto, 14px 34px;
+            background-repeat: no-repeat;
+            background-position: center 0, 40px 10px, 4px 14px, 24px 42px;
+        }
+
+        body.night .window-view::before {
+            background:
+                radial-gradient(circle at 46% 26%, #3d516e 0 18px, rgba(61, 81, 110, 0) 19px),
+                radial-gradient(circle at 68% 34%, #324561 0 14px, rgba(50, 69, 97, 0) 15px),
+                radial-gradient(circle at 26% 36%, #2c3e58 0 13px, rgba(44, 62, 88, 0) 14px),
+                linear-gradient(180deg, #544440 0%, #3c2f2d 100%);
+            background-size: auto, auto, auto, 14px 34px;
+            background-repeat: no-repeat;
+            background-position: center 0, 40px 10px, 4px 14px, 24px 42px;
+        }
+
+        .window-view::after {
+            content: "";
+            position: absolute;
+            right: 24px;
+            bottom: 26px;
+            width: 76px;
+            height: 22px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(172, 204, 213, 0.88) 0%, rgba(132, 174, 185, 0.96) 100%);
+            box-shadow: -92px -26px 0 4px rgba(158, 175, 157, 0.95), 38px 20px 0 32px rgba(126, 149, 128, 0.95), -58px -38px 0 24px rgba(152, 170, 151, 0.92);
+        }
+
+        body.night .window-view::after {
+            background: linear-gradient(180deg, rgba(90, 124, 176, 0.88) 0%, rgba(62, 93, 142, 0.96) 100%);
+            box-shadow: -92px -26px 0 4px rgba(64, 82, 107, 0.96), 38px 20px 0 32px rgba(42, 59, 93, 0.96), -58px -38px 0 24px rgba(50, 68, 96, 0.94);
+        }
+
+        .window-view>* {
+            display: none;
+        }
+
+        .room-window::before,
+        .room-window::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 33%;
+            height: 116%;
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.88), rgba(249, 249, 249, 0.62)),
+                repeating-linear-gradient(90deg, rgba(226, 226, 226, 0.24) 0 9px, rgba(255, 255, 255, 0) 9px 18px);
+            box-shadow: 0 10px 24px rgba(126, 131, 142, 0.1);
+            opacity: 0.95;
+            z-index: 3;
+            animation: curtainSway 7s ease-in-out infinite;
+        }
+
+        .room-window::before {
+            left: -5%;
+            border-radius: 24px 48px 40px 24px;
+            clip-path: polygon(0 0, 100% 2%, 86% 100%, 8% 92%);
+            transform-origin: top left;
+        }
+
+        .room-window::after {
+            right: -5%;
+            border-radius: 48px 24px 24px 40px;
+            clip-path: polygon(14% 2%, 100% 0, 92% 92%, 0 100%);
+            transform-origin: top right;
+            animation-direction: reverse;
+        }
+
+        .window-cloud {
+            position: absolute;
+            height: 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            box-shadow: 14px -5px 0 3px rgba(255, 255, 255, 0.66), 30px 0 0 2px rgba(255, 255, 255, 0.62);
+        }
+
+        .window-cloud.one {
+            width: 40px;
+            left: 18px;
+            top: 26px;
+        }
+
+        .window-cloud.two {
+            width: 48px;
+            right: 58px;
+            top: 50px;
+        }
+
+        .window-hill {
+            position: absolute;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .window-hill.back {
+            left: -8%;
+            bottom: 30%;
+            width: 70%;
+            height: 32%;
+            background: #98aa97;
+        }
+
+        .window-hill.front {
+            right: -12%;
+            bottom: -2%;
+            width: 82%;
+            height: 44%;
+            background: #7e9580;
+        }
+
+        .window-tree {
+            position: absolute;
+            left: 54px;
+            bottom: 52px;
+            width: 16px;
+            height: 46px;
+            background: linear-gradient(180deg, #846453 0%, #6a4f40 100%);
+            border-radius: 8px;
+        }
+
+        .window-tree::before {
+            content: "";
+            position: absolute;
+            left: -18px;
+            bottom: 16px;
+            width: 52px;
+            height: 44px;
+            border-radius: 50%;
+            background: #9daf9d;
+            box-shadow: 14px -10px 0 -4px #aab9aa, -8px -6px 0 -4px #93a593;
+        }
+
+        .window-lake {
+            position: absolute;
+            right: 24px;
+            bottom: 28px;
+            width: 76px;
+            height: 20px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(172, 204, 213, 0.88) 0%, rgba(132, 174, 185, 0.96) 100%);
+        }
+
+        .window-cross {
+            position: absolute;
+            background: rgba(215, 197, 180, 0.88);
+            z-index: 2;
+        }
+
+        .window-cross.vertical {
+            top: 12px;
+            bottom: 12px;
+            left: 50%;
+            width: 8px;
+            transform: translateX(-50%);
+        }
+
+        .window-cross.horizontal {
+            left: 12px;
+            right: 12px;
+            top: 50%;
+            height: 8px;
+            transform: translateY(-50%);
+        }
+
+        .curtain {
+            position: absolute;
+            top: -8px;
+            width: 33%;
+            height: 116%;
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.88), rgba(249, 249, 249, 0.62)),
+                repeating-linear-gradient(90deg, rgba(226, 226, 226, 0.24) 0 9px, rgba(255, 255, 255, 0) 9px 18px);
+            box-shadow: 0 10px 24px rgba(126, 131, 142, 0.1);
+            opacity: 0.95;
+            z-index: 3;
+            animation: curtainSway 7s ease-in-out infinite;
+        }
+
+        .curtain.left {
+            left: -5%;
+            border-radius: 24px 48px 40px 24px;
+            clip-path: polygon(0 0, 100% 2%, 86% 100%, 8% 92%);
+            transform-origin: top left;
+        }
+
+        .curtain.right {
+            right: -5%;
+            border-radius: 48px 24px 24px 40px;
+            clip-path: polygon(14% 2%, 100% 0, 92% 92%, 0 100%);
+            transform-origin: top right;
+            animation-direction: reverse;
+        }
+
+        .curtain-tie {
+            position: absolute;
+            top: 50%;
+            width: 28px;
+            height: 8px;
+            background: #d8c6b1;
+            border-radius: 999px;
+            box-shadow: 0 0 0 2px rgba(197, 177, 156, 0.22);
+        }
+
+        .curtain.left .curtain-tie {
+            right: 8px;
+        }
+
+        .curtain.right .curtain-tie {
+            left: 8px;
+        }
+
+        @keyframes curtainSway {
+
+            0%,
+            100% {
+                transform: rotate(0deg) translateY(0);
+            }
+
+            50% {
+                transform: rotate(2deg) translateY(2px);
+            }
+        }
+
+        .yarn-cluster {
+            position: absolute;
+            right: max(5vw, 54px);
+            bottom: 70px;
+            width: 174px;
+            height: 138px;
+            z-index: 8;
+        }
+
+        .yarn-ball {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 14px 22px rgba(108, 73, 47, 0.16);
+        }
+
+        .yarn-ball::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0) 34%),
+                repeating-linear-gradient(135deg, rgba(255, 255, 255, 0) 0 7px, rgba(113, 79, 57, 0.16) 7px 10px);
+        }
+
+        .yarn-ball.one {
+            left: 6px;
+            bottom: 18px;
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(180deg, #ff9bb4 0%, #ff6f97 100%);
+        }
+
+        .yarn-ball.two {
+            left: 56px;
+            bottom: 36px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(180deg, #7bc8ff 0%, #4ca0eb 100%);
+        }
+
+        .yarn-ball.three {
+            right: 8px;
+            bottom: 14px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(180deg, #f6d86f 0%, #e3b64d 100%);
+        }
+
+        .yarn-thread {
+            position: absolute;
+            left: 16px;
+            bottom: 8px;
+            width: 82px;
+            height: 52px;
+            border-left: 4px solid #ff7aa1;
+            border-bottom: 4px solid #ff7aa1;
+            border-radius: 0 0 0 40px;
+            transform: rotate(-16deg);
+        }
+
+        .yarn-thread::after {
+            content: "";
+            position: absolute;
+            right: -24px;
+            bottom: -8px;
+            width: 42px;
+            height: 28px;
+            border-top: 4px solid #ff7aa1;
+            border-right: 4px solid #ff7aa1;
+            border-radius: 0 28px 0 0;
+            transform: rotate(10deg);
         }
 
         /* UI Layer */
@@ -106,12 +708,467 @@
             pointer-events: auto;
         }
 
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+            pointer-events: none;
+        }
+
+        #reset-game {
+            cursor: pointer;
+            border: 1px solid #d8d5cf;
+            background: rgba(255, 255, 255, 0.96);
+            color: #5f5963;
+            padding: 10px 16px;
+            border-radius: 12px;
+            pointer-events: auto;
+        }
+
+        #guidelines-btn {
+            cursor: pointer;
+            border: 1px solid #cfdbe1;
+            background: rgba(244, 250, 252, 0.96);
+            color: #4f6671;
+            padding: 10px 16px;
+            border-radius: 12px;
+            pointer-events: auto;
+        }
+
+        #guidelines-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(62, 70, 78, 0.32);
+            backdrop-filter: blur(4px);
+            z-index: 220;
+        }
+
+        body.guidelines-open #guidelines-modal {
+            display: flex;
+        }
+
+        .guidelines-card {
+            position: relative;
+            width: min(92vw, 430px);
+            padding: 24px 22px 22px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(245, 238, 231, 0.98) 100%);
+            box-shadow: 0 24px 48px rgba(63, 51, 38, 0.22);
+            color: #5c5146;
+            pointer-events: auto;
+        }
+
+        .guidelines-card h2 {
+            margin: 0 0 14px;
+            font-size: 24px;
+            color: #5b4d3f;
+        }
+
+        .guidelines-intro {
+            margin: 0 0 12px;
+            line-height: 1.45;
+            color: #6b5e54;
+        }
+
+        .guidelines-list {
+            margin: 0;
+            padding-left: 20px;
+            line-height: 1.5;
+            color: #6f6259;
+        }
+
+        .guidelines-list li + li {
+            margin-top: 8px;
+        }
+
+        #guidelines-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: none;
+            background: rgba(222, 210, 197, 0.65);
+            color: #695c50;
+            border-radius: 999px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+        }
+
+        #game-finale {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 90;
+            background:
+                radial-gradient(circle at center, rgba(255, 255, 255, 0.16), rgba(240, 244, 248, 0.72) 46%, rgba(240, 244, 248, 0.94) 72%);
+        }
+
+        body.game-ended #game-finale {
+            display: flex;
+        }
+
+        body.game-ended #cat,
+        body.game-ended #food-bowl {
+            opacity: 0.06;
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        body.level-fifty-hold #cat {
+            pointer-events: none;
+            filter: drop-shadow(0 16px 28px rgba(255, 164, 195, 0.28));
+        }
+
+        body.level-fifty-hold #food-bowl {
+            pointer-events: none;
+            opacity: 0.22;
+        }
+
+        .finale-system {
+            position: relative;
+            width: min(92vw, 720px);
+            aspect-ratio: 1;
+        }
+
+        .finale-ring {
+            position: absolute;
+            inset: 14%;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(18, 59, 91, 0.22);
+        }
+
+        .finale-ring::before {
+            content: "";
+            position: absolute;
+            inset: 14%;
+            border-radius: 50%;
+            border: 1px dashed rgba(18, 59, 91, 0.12);
+        }
+
+        .orbit-slot {
+            position: absolute;
+            inset: 0;
+            animation: orbitSpin 22s linear infinite;
+        }
+
+        .orbit-anchor {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--orbit-radius)));
+        }
+
+        .orbit-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transform: rotate(calc(-1 * var(--angle))) scale(0.82);
+            transform-origin: center;
+            animation: orbitSpin 22s linear infinite reverse;
+        }
+
+        .finale-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            z-index: 2;
+        }
+
+        .mini-cat {
+            position: relative;
+            width: 66px;
+            height: 88px;
+            filter: drop-shadow(0 8px 14px rgba(18, 59, 91, 0.18));
+        }
+
+        .mini-cat.large {
+            width: 108px;
+            height: 142px;
+            filter: drop-shadow(0 12px 22px rgba(18, 59, 91, 0.22));
+        }
+
+        .mini-fur {
+            background: var(--mini-fill);
+            border: 2px solid var(--mini-stroke);
+            transition: none;
+        }
+
+        .mini-head {
+            width: 40px;
+            height: 34px;
+            border-radius: 50% 50% 45% 45%;
+            position: absolute;
+            top: 16px;
+            left: 13px;
+            z-index: 3;
+        }
+
+        .mini-cat.large .mini-head {
+            width: 62px;
+            height: 52px;
+            top: 22px;
+            left: 23px;
+        }
+
+        .mini-body {
+            width: 36px;
+            height: 44px;
+            border-radius: 50% 50% 36% 36%;
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            z-index: 1;
+        }
+
+        .mini-cat.large .mini-body {
+            width: 56px;
+            height: 70px;
+            bottom: 14px;
+            left: 26px;
+        }
+
+        .mini-ear {
+            width: 16px;
+            height: 20px;
+            position: absolute;
+            top: -8px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 2;
+        }
+
+        .mini-ear::before {
+            content: "";
+            position: absolute;
+            left: -2px;
+            right: -2px;
+            bottom: -4px;
+            height: 7px;
+            background: var(--mini-fill);
+        }
+
+        .mini-cat.large .mini-ear {
+            width: 22px;
+            height: 28px;
+            top: -12px;
+        }
+
+        .mini-ear.left {
+            left: 0;
+            transform: rotate(-16deg);
+        }
+
+        .mini-ear.right {
+            right: 0;
+            transform: rotate(16deg);
+        }
+
+        .mini-ear-inner {
+            width: 60%;
+            height: 66%;
+            margin: 22% auto 0;
+            background: #ffd1dc;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .mini-eye {
+            width: 7px;
+            height: 9px;
+            background: #2c3e50;
+            border-radius: 50%;
+            position: absolute;
+            top: 13px;
+            overflow: hidden;
+        }
+
+        .mini-cat.large .mini-eye {
+            width: 10px;
+            height: 13px;
+            top: 20px;
+        }
+
+        .mini-eye::before,
+        .mini-eye::after {
+            content: "";
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+
+        .mini-eye::before {
+            width: 3px;
+            height: 3px;
+            left: 1px;
+            top: 1px;
+        }
+
+        .mini-eye::after {
+            width: 2px;
+            height: 2px;
+            right: 1px;
+            top: 5px;
+            opacity: 0.9;
+        }
+
+        .mini-eye.left {
+            left: 10px;
+        }
+
+        .mini-eye.right {
+            right: 10px;
+        }
+
+        .mini-nose {
+            width: 8px;
+            height: 6px;
+            background: #f497ad;
+            position: absolute;
+            left: 50%;
+            top: 22px;
+            transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+        }
+
+        .mini-cat.large .mini-nose {
+            width: 11px;
+            height: 8px;
+            top: 31px;
+        }
+
+        .mini-mouth {
+            width: 10px;
+            height: 6px;
+            border-bottom: 2px solid #6f5963;
+            border-radius: 0 0 10px 10px;
+            position: absolute;
+            left: 50%;
+            top: 29px;
+            transform: translateX(-50%);
+        }
+
+        .mini-cat.large .mini-mouth {
+            width: 15px;
+            height: 8px;
+            top: 41px;
+        }
+
+        .mini-tail {
+            width: 34px;
+            height: 12px;
+            border-radius: 14px 999px 999px 18px;
+            position: absolute;
+            bottom: 18px;
+            left: calc(50% - 4px);
+            transform: rotate(-34deg);
+            transform-origin: 7px center;
+            z-index: 0;
+        }
+
+        .mini-cat.large .mini-tail {
+            width: 50px;
+            height: 16px;
+            bottom: 28px;
+            left: calc(50% - 6px);
+        }
+
+        .mini-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.92);
+            color: var(--mini-label);
+        }
+
+        .rainbow-text {
+            background-image: var(--rainbow-text-fill);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .mini-label.rainbow-text {
+            text-shadow: none;
+        }
+
+        .finale-center .cat-container {
+            cursor: default;
+            pointer-events: none;
+            filter: drop-shadow(0 18px 32px rgba(18, 59, 91, 0.24));
+        }
+
+        .finale-message {
+            font-size: clamp(28px, 3.3vw, 40px);
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 0 rgba(255, 255, 255, 0.82);
+        }
+
+        .finale-message.rainbow-text {
+            text-shadow: none;
+        }
+
+        @media (max-width: 520px) {
+            .room-window {
+                right: 14px;
+                top: 126px;
+                width: min(50vw, 210px);
+                height: min(38vw, 154px);
+            }
+
+            .cat-apparatus {
+                left: 8px;
+                bottom: calc(124px + 10mm);
+                transform: scale(0.88);
+                transform-origin: bottom left;
+            }
+
+            .yarn-cluster {
+                right: 16px;
+                bottom: 96px;
+                transform: scale(0.84);
+                transform-origin: bottom right;
+            }
+
+            .orbit-card {
+                transform: rotate(calc(-1 * var(--angle))) scale(0.72);
+            }
+
+            .finale-center .cat-container {
+                transform: scale(0.92);
+                transform-origin: center;
+            }
+        }
+
+        @keyframes orbitSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
         /* The Cat */
         .cat-container {
             position: relative;
             width: 220px;
             height: 280px;
             cursor: pointer;
+            z-index: 12;
         }
 
         @keyframes purr {
@@ -285,13 +1342,14 @@
         }
 
         .eye {
-            width: 22px;
-            height: 22px;
-            background: white;
+            width: 24px;
+            height: 24px;
+            background: #1b2029;
             border-radius: 50%;
             position: absolute;
             top: 40px;
-            border: 1px solid #eee;
+            border: 2px solid #313948;
+            box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.06);
             overflow: hidden;
             transition: 0.4s;
         }
@@ -305,10 +1363,8 @@
         }
 
         .pupil {
-            width: 10px;
-            height: 10px;
-            background: #2c3e50;
-            border-radius: 50%;
+            width: 16px;
+            height: 16px;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -316,10 +1372,35 @@
             transition: opacity 0.3s;
         }
 
+        .pupil::before,
+        .pupil::after {
+            content: "";
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+        }
+
+        .pupil::before {
+            width: 8px;
+            height: 8px;
+            left: 1px;
+            top: 1px;
+        }
+
+        .pupil::after {
+            width: 4px;
+            height: 4px;
+            right: 1px;
+            top: 8px;
+        }
+
         body.night .eye {
             height: 3px;
             top: 50px;
             background: #555;
+            border-color: #555;
+            box-shadow: none;
         }
 
         body.night .pupil {
@@ -359,11 +1440,40 @@
             border-radius: 0 0 18px 18px;
         }
 
+        body.hungry .mouth {
+            top: 89px;
+            height: 8px;
+            border-bottom: none;
+            border-top: 3px solid #7b5c65;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .blush {
+            position: absolute;
+            top: 66px;
+            width: 22px;
+            height: 12px;
+            border-radius: 999px;
+            background: radial-gradient(circle at center, rgba(255, 182, 193, 0.72) 0%, rgba(255, 182, 193, 0.42) 58%, rgba(255, 182, 193, 0) 100%);
+            filter: blur(0.4px);
+            z-index: 1;
+        }
+
+        .blush.left {
+            left: 15px;
+            transform: rotate(-10deg);
+        }
+
+        .blush.right {
+            right: 15px;
+            transform: rotate(10deg);
+        }
+
         .whisker {
             position: absolute;
             width: 36px;
             height: 2px;
-            background: #7b7b7b;
+            background: var(--whisker-color);
             border-radius: 999px;
         }
 
@@ -431,10 +1541,99 @@
             position: absolute;
             bottom: 40px;
             left: 40px;
-            font-size: 50px;
+            width: 108px;
+            height: 86px;
             cursor: pointer;
             transition: transform 0.2s;
             pointer-events: auto;
+            z-index: 11;
+        }
+
+        #food-bowl:hover {
+            transform: translateY(-2px);
+        }
+
+        .bowl-biscuits {
+            position: absolute;
+            left: 12px;
+            top: 4px;
+            width: 82px;
+            height: 36px;
+        }
+
+        .fish-biscuit {
+            position: absolute;
+            width: 26px;
+            height: 14px;
+            background: linear-gradient(180deg, #e1bc7d 0%, #c9924e 100%);
+            border: 2px solid #9f6d33;
+            clip-path: polygon(0 50%, 16% 26%, 38% 18%, 60% 18%, 76% 0, 96% 18%, 100% 50%, 96% 82%, 76% 100%, 60% 82%, 38% 82%, 16% 74%);
+            box-shadow: inset 0 -2px 0 rgba(120, 77, 22, 0.18);
+        }
+
+        .fish-biscuit::before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 4px;
+            width: 3px;
+            height: 3px;
+            background: #8a5c28;
+            border-radius: 50%;
+            box-shadow: 6px 1px 0 rgba(138, 92, 40, 0.55);
+        }
+
+        .fish-biscuit.one {
+            left: 0;
+            top: 11px;
+            transform: rotate(-8deg);
+        }
+
+        .fish-biscuit.two {
+            left: 25px;
+            top: 0;
+            transform: rotate(9deg);
+        }
+
+        .fish-biscuit.three {
+            left: 52px;
+            top: 12px;
+            transform: rotate(14deg);
+        }
+
+        .bowl-shell {
+            position: absolute;
+            left: 10px;
+            bottom: 0;
+            width: 88px;
+            height: 48px;
+            background: linear-gradient(180deg, #ffc3cf 0%, #ff8fad 100%);
+            border: 3px solid #d85d83;
+            border-radius: 0 0 36px 36px;
+            box-shadow: inset 0 -6px 0 rgba(171, 61, 95, 0.24), 0 8px 16px rgba(184, 97, 124, 0.15);
+        }
+
+        .bowl-shell::before {
+            content: "";
+            position: absolute;
+            left: -5px;
+            right: -5px;
+            top: -8px;
+            height: 16px;
+            background: #ffe1e8;
+            border: 3px solid #d85d83;
+            border-radius: 999px;
+        }
+
+        .bowl-shell::after {
+            content: "";
+            position: absolute;
+            left: 22px;
+            bottom: 8px;
+            width: 44px;
+            height: 11px;
+            border-radius: 999px;
+            background: rgba(255, 245, 247, 0.4);
         }
 
         #speech-bubble {
@@ -461,6 +1660,8 @@
             font-size: 24px;
             animation: flyUp 1s forwards;
             pointer-events: none;
+            z-index: 140;
+            filter: drop-shadow(0 2px 6px rgba(255, 111, 151, 0.35));
         }
 
         @keyframes flyUp {
@@ -479,6 +1680,65 @@
 
 <body>
 
+    <div id="room-scene" aria-hidden="true">
+        <div class="room-window">
+            <div class="window-frame">
+                <div class="window-view">
+                    <div class="family-photo">
+                        <div class="photo-title">Family</div>
+                        <div class="family-cat papa">
+                            <div class="family-body"></div>
+                            <div class="family-head">
+                                <div class="family-ear left"></div>
+                                <div class="family-ear right"></div>
+                                <div class="family-eye left"></div>
+                                <div class="family-eye right"></div>
+                                <div class="family-nose"></div>
+                                <div class="family-mouth"></div>
+                            </div>
+                        </div>
+                        <div class="family-cat baby">
+                            <div class="family-body"></div>
+                            <div class="family-head">
+                                <div class="family-ear left"></div>
+                                <div class="family-ear right"></div>
+                                <div class="family-eye left"></div>
+                                <div class="family-eye right"></div>
+                                <div class="family-nose"></div>
+                                <div class="family-mouth"></div>
+                            </div>
+                        </div>
+                        <div class="family-cat mum">
+                            <div class="family-body"></div>
+                            <div class="family-head">
+                                <div class="family-ear left"></div>
+                                <div class="family-ear right"></div>
+                                <div class="family-eye left"></div>
+                                <div class="family-eye right"></div>
+                                <div class="family-nose"></div>
+                                <div class="family-mouth"></div>
+                            </div>
+                        </div>
+                        <div class="family-heart">❤</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cat-apparatus">
+            <div class="apparatus-top"></div>
+            <div class="apparatus-toy"></div>
+            <div class="apparatus-platform"></div>
+            <div class="apparatus-post"></div>
+            <div class="apparatus-base"></div>
+        </div>
+        <div class="yarn-cluster">
+            <div class="yarn-ball one"></div>
+            <div class="yarn-ball two"></div>
+            <div class="yarn-ball three"></div>
+            <div class="yarn-thread"></div>
+        </div>
+    </div>
+
     <div id="ui-layer">
         <div>
             <div class="stat-box">🐾 Pets: <span id="pet-count">0</span></div>
@@ -493,10 +1753,37 @@
                 </div>
             </div>
         </div>
-        <button id="theme-toggle">Night Mode</button>
+        <div class="action-buttons">
+            <button id="theme-toggle">Night Mode</button>
+            <button id="reset-game" type="button">Reset Game</button>
+            <button id="guidelines-btn" type="button" aria-haspopup="dialog" aria-expanded="false">Guidelines</button>
+        </div>
     </div>
 
-    <div id="food-bowl">🥣</div>
+    <div id="guidelines-modal" aria-hidden="true">
+        <div class="guidelines-card" role="dialog" aria-modal="true" aria-labelledby="guidelines-title">
+            <button id="guidelines-close" type="button" aria-label="Close guidelines">x</button>
+            <h2 id="guidelines-title">Guidelines</h2>
+            <p class="guidelines-intro">A quick guide so players always know what to do and what each action means.</p>
+            <ol class="guidelines-list">
+                <li>Pet the cat to increase the pet count and earn progress. Twenty-five pets are enough to reach the next level by petting alone.</li>
+                <li>Feed her from the bowl to refill hunger and give her a little extra XP boost.</li>
+                <li>If hunger gets low, her face turns sad, so keep an eye on the hunger bar.</li>
+                <li>Night Mode is for resting and cozy vibes, and hunger pauses while she is sleeping.</li>
+                <li>At level 50, the rainbow celebration appears after a short 5-second hero moment.</li>
+                <li>Use Reset Game anytime if you want to start fresh from level 1.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="food-bowl" aria-label="Feed the cat" role="button">
+        <div class="bowl-biscuits">
+            <div class="fish-biscuit one"></div>
+            <div class="fish-biscuit two"></div>
+            <div class="fish-biscuit three"></div>
+        </div>
+        <div class="bowl-shell"></div>
+    </div>
 
     <div class="cat-container" id="cat">
         <div id="speech-bubble">Welcome Back!</div>
@@ -530,6 +1817,8 @@
             <div class="eye right">
                 <div class="pupil"></div>
             </div>
+            <div class="blush left"></div>
+            <div class="blush right"></div>
             <div class="whiskers">
                 <div class="whisker left top"></div>
                 <div class="whisker left middle"></div>
@@ -543,18 +1832,77 @@
         </div>
     </div>
 
+    <div id="game-finale" aria-hidden="true">
+        <div class="finale-system">
+            <div class="finale-ring"></div>
+            <div id="finale-orbits"></div>
+            <div class="finale-center" id="finale-center"></div>
+        </div>
+    </div>
+
     <script>
         // Game State
-        let pets = 0, hunger = 100, xp = 0, lvl = 1;
+        const MAX_LEVEL = 50;
+        const FINALE_DELAY_MS = 5000;
+        const PETS_PER_LEVEL = 25;
+        const XP_PER_LEVEL = 100;
+        const PET_XP = XP_PER_LEVEL / PETS_PER_LEVEL;
+        const FEED_XP = 5;
+        const STAGE_DATA = [
+            { level: 1, className: '', fill: '#f7f3eb', stroke: '#ddd7cd', label: '#b8ada0' },
+            { level: 5, className: 'gold-mode', fill: '#e6d88f', stroke: '#c3b36a', label: '#b89d50' },
+            { level: 10, className: 'baby-blue-mode', fill: '#bfe6ff', stroke: '#8dbedc', label: '#6e9cb8' },
+            { level: 15, className: 'lilac-mode', fill: '#d5bbff', stroke: '#aa8fd6', label: '#8b73b6' },
+            { level: 20, className: 'baby-pink-mode', fill: '#f4c4d4', stroke: '#d39faf', label: '#c2869a' },
+            { level: 25, className: 'cool-red-mode', fill: '#d77d95', stroke: '#ac5670', label: '#9f4862' },
+            { level: 30, className: 'pistachio-mode', fill: '#c9ddb1', stroke: '#9eb483', label: '#88a068' },
+            { level: 35, className: 'violet-mode', fill: '#8f79bf', stroke: '#6c5b93', label: '#6c5b93' },
+            { level: 40, className: 'orange-mode', fill: '#ebb087', stroke: '#cb8760', label: '#bf7c4f' },
+            { level: 45, className: 'black-mode', fill: '#3b4048', stroke: '#676f7d', label: '#cfd4de' },
+            {
+                level: 50,
+                className: 'rainbow-mode',
+                fill: 'var(--rainbow-fill)',
+                stroke: '#fff8ff',
+                label: 'var(--rainbow-text-fill)',
+                rainbow: true
+            }
+        ];
+        const STAGE_CLASS_NAMES = STAGE_DATA.map((stage) => stage.className).filter(Boolean);
+        const FINALE_STAGES = STAGE_DATA.filter((stage) => stage.level < MAX_LEVEL);
+        let pets = 0, hunger = 100, xp = 0, lvl = 1, gameEnded = false, finaleVisible = false;
+        let finaleDelayTimer = null;
         const body = document.body;
         const cat = document.getElementById('cat');
         const pupils = document.querySelectorAll('.pupil');
         const bubble = document.getElementById('speech-bubble');
+        const finaleOrbits = document.getElementById('finale-orbits');
+        const finaleCenter = document.getElementById('finale-center');
+        const finalePanel = document.getElementById('game-finale');
+        const guidelinesButton = document.getElementById('guidelines-btn');
+        const guidelinesModal = document.getElementById('guidelines-modal');
+        const guidelinesClose = document.getElementById('guidelines-close');
 
         // 1. PERSISTENCE: Save & Load Functions
         function saveGame() {
-            const gameState = { pets, hunger, xp, lvl };
+            const gameState = { pets, hunger, xp, lvl, gameEnded, finaleVisible };
             localStorage.setItem('catSimSave', JSON.stringify(gameState));
+        }
+
+        function scheduleFinaleReveal() {
+            clearTimeout(finaleDelayTimer);
+            if (!gameEnded || finaleVisible) return;
+            finaleDelayTimer = setTimeout(() => {
+                finaleVisible = true;
+                renderFinale();
+                updateUI();
+            }, FINALE_DELAY_MS);
+        }
+
+        function setGuidelinesOpen(isOpen) {
+            body.classList.toggle('guidelines-open', isOpen);
+            guidelinesModal.setAttribute('aria-hidden', String(!isOpen));
+            guidelinesButton.setAttribute('aria-expanded', String(isOpen));
         }
 
         function loadGame() {
@@ -562,62 +1910,196 @@
             if (saved) {
                 const data = JSON.parse(saved);
                 pets = data.pets || 0;
-                hunger = data.hunger || 100;
-                xp = data.xp || 0;
-                lvl = data.lvl || 1;
+                hunger = typeof data.hunger === 'number' ? data.hunger : 100;
+                xp = typeof data.xp === 'number' ? data.xp : 0;
+                lvl = typeof data.lvl === 'number' ? Math.min(MAX_LEVEL, Math.max(1, data.lvl)) : 1;
+                gameEnded = Boolean(data.gameEnded) || lvl >= MAX_LEVEL;
+                finaleVisible = Boolean(data.finaleVisible) && gameEnded;
+                if (gameEnded) {
+                    lvl = MAX_LEVEL;
+                    xp = XP_PER_LEVEL;
+                    renderFinale();
+                    if (!finaleVisible) {
+                        scheduleFinaleReveal();
+                    }
+                }
                 updateUI();
                 showBubble("Data Loaded!");
             }
         }
 
-        function applyCatAppearance() {
-            body.classList.remove('gold-mode', 'lilac-mode', 'rainbow-mode');
-
-            if (lvl >= 50) {
-                body.classList.add('rainbow-mode');
-            } else if (lvl >= 15) {
-                body.classList.add('lilac-mode');
-            } else if (lvl >= 5) {
-                body.classList.add('gold-mode');
+        function getStageForLevel(level) {
+            for (let i = STAGE_DATA.length - 1; i >= 0; i--) {
+                if (level >= STAGE_DATA[i].level) {
+                    return STAGE_DATA[i];
+                }
             }
+            return STAGE_DATA[0];
+        }
+
+        function applyCatAppearance() {
+            body.classList.remove(...STAGE_CLASS_NAMES);
+            const stage = getStageForLevel(lvl);
+            if (stage.className) {
+                body.classList.add(stage.className);
+            }
+        }
+
+        function buildMiniCat(stage, extraClass = '') {
+            const rainbowClass = stage.rainbow ? ' rainbow-text' : '';
+            return `
+                <div class="mini-cat ${extraClass}" style="--mini-fill: ${stage.fill}; --mini-stroke: ${stage.stroke}; --mini-label: ${stage.rainbow ? '#ffffff' : stage.label};">
+                    <div class="mini-tail mini-fur"></div>
+                    <div class="mini-body mini-fur"></div>
+                    <div class="mini-head mini-fur">
+                        <div class="mini-ear left mini-fur"><div class="mini-ear-inner"></div></div>
+                        <div class="mini-ear right mini-fur"><div class="mini-ear-inner"></div></div>
+                        <div class="mini-eye left"></div>
+                        <div class="mini-eye right"></div>
+                        <div class="mini-nose"></div>
+                    </div>
+                </div>
+                <div class="mini-label${rainbowClass}">Congrats</div>
+            `;
+        }
+
+        function buildFinaleHeroCat() {
+            return `
+                <div class="cat-container">
+                    <div class="tail fur"></div>
+                    <div class="feet">
+                        <div class="foot left fur">
+                            <div class="paw-print"></div>
+                        </div>
+                        <div class="foot right fur">
+                            <div class="paw-print"></div>
+                        </div>
+                    </div>
+                    <div class="body fur">
+                        <div class="arm left fur">
+                            <div class="paw-print"></div>
+                        </div>
+                        <div class="arm right fur">
+                            <div class="paw-print"></div>
+                        </div>
+                    </div>
+                    <div class="head fur">
+                        <div class="ear left fur">
+                            <div class="inner-ear"></div>
+                        </div>
+                        <div class="ear right fur">
+                            <div class="inner-ear"></div>
+                        </div>
+                        <div class="eye left">
+                            <div class="pupil"></div>
+                        </div>
+                        <div class="eye right">
+                            <div class="pupil"></div>
+                        </div>
+                        <div class="blush left"></div>
+                        <div class="blush right"></div>
+                        <div class="whiskers">
+                            <div class="whisker left top"></div>
+                            <div class="whisker left middle"></div>
+                            <div class="whisker left bottom"></div>
+                            <div class="whisker right top"></div>
+                            <div class="whisker right middle"></div>
+                            <div class="whisker right bottom"></div>
+                        </div>
+                        <div class="nose"></div>
+                        <div class="mouth"></div>
+                    </div>
+                </div>
+                <div class="finale-message rainbow-text">Congrats</div>
+            `;
+        }
+
+        function renderFinale() {
+            const orbitRadius = window.innerWidth <= 520 ? 'min(37vw, 172px)' : 'min(34vw, 246px)';
+            const angleStep = 360 / FINALE_STAGES.length;
+            finaleOrbits.innerHTML = FINALE_STAGES.map((stage, index) => `
+                <div class="orbit-slot" style="--angle: ${index * angleStep}deg; --orbit-radius: ${orbitRadius};">
+                    <div class="orbit-anchor">
+                        <div class="orbit-card">
+                            ${buildMiniCat(stage)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            finaleCenter.innerHTML = buildFinaleHeroCat();
         }
 
         // 2. UI Updates
         function updateUI() {
+            if (lvl >= MAX_LEVEL) {
+                lvl = MAX_LEVEL;
+                gameEnded = true;
+                xp = XP_PER_LEVEL;
+            }
+
             applyCatAppearance();
+            body.classList.toggle('hungry', !gameEnded && hunger <= 30);
             document.getElementById('pet-count').innerText = pets;
             document.getElementById('lvl-count').innerText = lvl;
-            document.getElementById('xp-fill').style.width = xp + "%";
+            document.getElementById('xp-fill').style.width = `${((gameEnded ? XP_PER_LEVEL : xp) / XP_PER_LEVEL) * 100}%`;
             document.getElementById('hunger-fill').style.width = hunger + "%";
+            body.classList.toggle('level-fifty-hold', gameEnded && !finaleVisible);
+            body.classList.toggle('game-ended', finaleVisible);
+            finalePanel.setAttribute('aria-hidden', String(!finaleVisible));
             saveGame(); // Auto-save on every update
         }
 
         // 3. Game Loops
         setInterval(() => {
-            if (body.classList.contains('night')) return;
+            if (body.classList.contains('night') || gameEnded) return;
             hunger = Math.max(0, hunger - 1);
             updateUI();
         }, 2000);
 
         // 4. Interactions
         document.getElementById('food-bowl').addEventListener('click', () => {
+            if (gameEnded) {
+                showBubble("Congrats!");
+                return;
+            }
             hunger = Math.min(100, hunger + 20);
-            addXP(5);
+            addXP(FEED_XP);
             updateUI();
             showBubble("Yum! 🐟");
         });
 
         cat.addEventListener('mousedown', (e) => {
+            if (gameEnded) {
+                showBubble("Congrats!");
+                return;
+            }
             pets++;
-            addXP(2);
+            addXP(PET_XP);
             createHeart(e.clientX, e.clientY);
             updateUI();
             showBubble(body.classList.contains('night') ? "Zzz..." : "Purrr~");
         });
 
         function addXP(amount) {
+            if (gameEnded) return;
             xp += amount;
-            if (xp >= 100) { xp = 0; lvl++; showBubble("LEVEL UP! ⭐"); }
+            if (xp >= XP_PER_LEVEL) {
+                xp = 0;
+                lvl++;
+
+                if (lvl >= MAX_LEVEL) {
+                    lvl = MAX_LEVEL;
+                    gameEnded = true;
+                    finaleVisible = false;
+                    xp = XP_PER_LEVEL;
+                    scheduleFinaleReveal();
+                    showBubble("Congrats!");
+                    return;
+                }
+
+                showBubble("LEVEL UP! ⭐");
+            }
         }
 
         function createHeart(x, y) {
@@ -629,12 +2111,44 @@
         }
 
         // Initialize
+        renderFinale();
         window.onload = loadGame;
+        window.addEventListener('resize', renderFinale);
 
         // Night Mode & Eye Tracking
         document.getElementById('theme-toggle').addEventListener('click', (e) => {
             body.classList.toggle('night');
             e.target.innerText = body.classList.contains('night') ? "Day Mode" : "Night Mode";
+        });
+
+        document.getElementById('reset-game').addEventListener('click', () => {
+            clearTimeout(finaleDelayTimer);
+            setGuidelinesOpen(false);
+            localStorage.removeItem('catSimSave');
+            pets = 0;
+            hunger = 100;
+            xp = 0;
+            lvl = 1;
+            gameEnded = false;
+            finaleVisible = false;
+            body.classList.remove('night');
+            document.getElementById('theme-toggle').innerText = "Night Mode";
+            updateUI();
+            showBubble("Fresh Start!");
+        });
+
+        guidelinesButton.addEventListener('click', () => {
+            setGuidelinesOpen(true);
+        });
+
+        guidelinesClose.addEventListener('click', () => {
+            setGuidelinesOpen(false);
+        });
+
+        guidelinesModal.addEventListener('click', (e) => {
+            if (e.target === guidelinesModal) {
+                setGuidelinesOpen(false);
+            }
         });
 
         document.addEventListener('mousemove', (e) => {
@@ -651,6 +2165,12 @@
             bubble.classList.add('active');
             setTimeout(() => bubble.classList.remove('active'), 1500);
         }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && body.classList.contains('guidelines-open')) {
+                setGuidelinesOpen(false);
+            }
+        });
     </script>
 </body>
 
